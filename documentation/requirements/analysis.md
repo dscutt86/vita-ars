@@ -10,10 +10,13 @@
 ## 2. Stakeholders
 | Stakeholder | Role / Interest | Major Needs |
 | ----------- | --------------- | ----------- |
-| IRS | Local office efficacy | Ensure local VITA/TCE office manages client schedules effectively |
-| IRS Partners | Operational efficacy | Ensure clients are scheduling meetings effectively and without duplicate appointments |
-| VITA/TCE Volunteers | Time Efficiency | Ensure clients are properly scheduling appointments and arriving prepared |
-| Clients | Receiving needed services | Receive proper and effective services |
+| IRS Partners | Manage Appointments | Be able to edit appointments |
+||| Be able to cancel appointments |
+||| Be able to over-ride rules/requirements that would disallow multiple appointments |
+| VITA/TCE Volunteers | View Appointments | Be able to view appointments |
+| Clients | Schedule an Appointment | Be able to easily schedule an appointment |
+||| Be prompted to ensure they do not schedule more than one appointment per year |
+||| Be asked a series of questions ensuring they meet the criteria for service |
 
 
 ## 3. Scope
