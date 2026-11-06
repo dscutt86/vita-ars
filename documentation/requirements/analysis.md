@@ -84,3 +84,4 @@ through the Site Coordinator, then schedule a new appointment.
 | 10/28/2026 | Document created ||||
 | 10/29/2026 | Scope ||| Scope statements added |
 | 10/29/2026 | Requirements ||| Requirements/Rules added |
+| 10/6/2026 | Stakeholders | Stakeholder interests/needs not clear | Needs should be clearly defined | Refined stakeholder interests/needs |
