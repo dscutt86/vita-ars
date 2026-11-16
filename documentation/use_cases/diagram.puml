@@ -1,0 +1,27 @@
+@startuml
+header <size:18><b>Use Case Diagram</b></size>
+title Use Case Diagram
+
+left to right direction
+
+actor Coordinator as coord
+actor Client as clt
+
+rectangle "VITA Appointment Reservation System" {
+    usecase "View Schedule and Appointments" as UC1
+    usecase "Maintain Schedule and Appointments" as UC2
+    usecase "Enforce One-Household Rule" as UC3
+    usecase "Access Reservation System and Schedule" as UC4
+    usecase "Screen for and Reserve Appointment" as UC5
+    usecase "Review and Cancel Reservation" as UC6
+}
+
+coord -- UC1
+coord -- UC2
+coord -- UC3
+UC4 -- clt
+UC5 -- clt
+UC6 -- clt
+
+
+@enduml

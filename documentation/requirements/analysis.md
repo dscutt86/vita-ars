@@ -10,7 +10,7 @@
 ## 2. Stakeholders
 | Stakeholder | Role / Interest | Major Needs |
 | ----------- | --------------- | ----------- |
-| IRS Partners | Manage Appointments | Be able to edit appointments |
+| Site Coordinator | Manage Appointments | Be able to edit appointments |
 ||| Be able to cancel appointments |
 ||| Be able to over-ride rules/requirements that would disallow multiple appointments |
 | VITA/TCE Volunteers | View Appointments | Be able to view appointments |
@@ -22,7 +22,7 @@
 ## 3. Scope
 | In Scope | Out of Scope / Future Version |
 | -------- | ----------------------------- |
-| Allow appointment scheduling through _____ | Non-English support |
+| Allow appointment scheduling through online platform | Non-English support |
 | Automatically screen clients | Follow-up appointments |
 | Reminder to not schedule multiple appointments | Client accounts |
 | Delete appointment info after 3 years | Data encryption / PII |

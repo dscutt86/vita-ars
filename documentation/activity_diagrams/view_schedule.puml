@@ -1,0 +1,22 @@
+@startuml
+title View Site Schedule
+
+start
+
+:Coordinator: Enter site ID and date to view;
+:System: Initialize 'results' variable;
+:System: Query database appointments;
+
+repeat
+  if (Corresponding search terms match) then (yes)
+    :Add appointment details to 'results';
+  endif
+  :Read next entry in records by site ID and date;
+repeat while (Entries remain to be read) is (yes) not (no)
+
+:System: Return 'results' to viewer;
+:System: Display results;
+
+stop
+
+@enduml
