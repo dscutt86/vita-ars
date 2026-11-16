@@ -1,0 +1,29 @@
+@startuml
+title Delete Site Schedule
+
+start
+
+:Coordinator: Enter site ID and date to add/modify;
+:System: Check database to see if an existing schedule for that date exists, returning empty if no schedule exists for that date, or schedule details if it does;
+:System: Return 'results' to coordinator;
+
+if (schedule exists) then (no)
+    :System: Show message that no schedule exists to delete;
+    stop
+else (yes)
+  :System: Search database for existing blocks and reservations belonging to scheduled date;
+  if (Existing reservations) then (yes)
+    :System: Show message that schedule cannot be deleted due to existing reservations;
+  else (no)
+    :System: Show confirmation option;
+    if (Coordinator confirms) then (no)
+      stop
+    else (yes)
+      :System: Delete schedule from database;
+    endif
+  endif
+endif
+
+stop
+
+@enduml

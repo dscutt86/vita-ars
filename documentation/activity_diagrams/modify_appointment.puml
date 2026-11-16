@@ -1,0 +1,22 @@
+@startuml
+title View Site Schedule
+
+start
+
+:Coordinator: Enter full name, phone number and zip code of client; or confirmation number for appointment;
+:System: Query database schedules;
+
+if (Schedule exists for client) then (yes)
+  :System: return schedule information in modifiable form;
+  :Coordinator: Modify any fields that require editing;
+  :Coordinator: Click submit to send details to database;
+  :System: Update data for appointment, for client;
+else (no)
+  :System: Return 'no schedule';
+endif
+
+:System: Show confirmation/no appointment;
+
+stop
+
+@enduml

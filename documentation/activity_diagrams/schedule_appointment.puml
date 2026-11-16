@@ -1,0 +1,35 @@
+@startuml
+title Schedule an Appointment
+
+start
+
+:Client: Enter portal and choose site (captures site id);
+:System: Show landing page for site and an option to reserve an appointment;
+:Client: Click "reserve an appointment";
+:System: Show screening questions;
+
+if (My household already has an appointment) then (no)
+  if (I am a veteran, active duty person, person with a disability or senior aged 65 or older; or have household income $89k or less?) then (no)
+    :System: Show message explaining screening requirements and that user is unqualified for services;
+    stop
+  else (yes)
+    :System: Show page for selecting available dates;
+    repeat
+      if (Selected date) then (yes)
+        :System: Show page for selecting available blocks;
+        if (Selected block) then (yes)
+          :System: Give confirmation for date and time;
+          if (Client confirmed) then (yes)
+            :System: Update database with new reservation;
+            :System: Send confirmation email;
+          endif
+        endif
+      endif
+    repeat while (Confirmed date and time) is (no) not (yes)
+  endif
+else (yes)
+  :System: Show message explaining one appointment per fiscal year per household;
+endif
+
+stop
+@enduml

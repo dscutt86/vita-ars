@@ -5,17 +5,27 @@ start
 
 :Coordinator: Enter site ID and date to view;
 :System: Initialize 'results' variable;
-:System: Query database appointments;
+:System: Query database schedules;
 
-repeat
-  if (Corresponding search terms match) then (yes)
-    :Add appointment details to 'results';
-  endif
-  :Read next entry in records by site ID and date;
-repeat while (Entries remain to be read) is (yes) not (no)
+if (Schedule exists for date and site) then (yes)
+  :System: Query database blocks;
+  repeat
+    if (Next block belongs to schedule) then (yes)
+      :System: Add block to 'results';
+      :System: Query database reservations;
+      repeat
+        if (Next reservation belongs to block) then (yes)
+          :System: Add reservation to 'results';
+        endif
+      repeat while (Reservations remain to be read) is (yes) not (no)
+    endif
+  repeat while (Blocks remain to be read) is (yes) not (no)
+  :Test;
+else (no)
+  :System: Return 'no schedule';
+endif
 
-:System: Return 'results' to viewer;
-:System: Display results;
+:System: Show coordinator review page including schedule results;
 
 stop
 

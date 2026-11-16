@@ -1,0 +1,51 @@
+@startuml
+title Create Site Schedule
+start
+
+:Coordinator: Enter site ID and date to view;
+:System: Initialize 'results' variable;
+:System: Query database schedules;
+
+if (Schedule exists for date and site) then (yes)
+  :System: Query database blocks;
+  repeat
+    if (Next block belongs to schedule) then (yes)
+      :System: Add block to 'results';
+      :System: Query database reservations;
+      repeat
+      if (Next reservation belongs to block) then (yes)
+        :System: Add reservation to 'results';
+      endif
+      repeat while (Reservations remain to be read) is (yes) not (no)
+    endif
+    repeat while (Blocks remain to be read) is (yes) not (no)
+else (no)
+  :System: Return 'no schedule';
+endif
+
+repeat
+  :System: Ask coordinator if they would like to create new schedule for that date;
+  if (Coordinator clicks yes) then (yes)
+    :System: Create new schedule for that date in the database;
+    :System: Ask coordinator if they would like to create new blocks for that schedule;
+    if (Coordinator clicks yes) then (yes)
+      :System: Show schedule block creation page;
+    else (no)
+      :System: Return to main page;
+    endif
+  else (no)
+    :System: Return to main page;
+  endif
+repeat while (Schedule for date exists) then (yes)
+
+
+
+switch (Test?)
+  case (1)
+    :Text 1;
+  case (2)
+    :Text 2;
+endswitch
+
+stop
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title Cancel an Appointment
+
+start
+
+:Client: Enter portal and choose cancel an appointment option;
+:System: Show form asking for info for appointment;
+:Client: Enter full name, phone number and zip code; or confirmation number in confirmation email;
+
+if (Appointment found in database) then (yes)
+  :System: Ask client to confirm that they would like to cancel this appointment;
+  if (Client confirms) then (no)
+    :System: Return to landing page;
+  else (yes)
+    :System: Mark reservation status in database as 'canceled';
+  endif
+else (no)
+  :System: Message that appointment could not be found;
+endif
+
+stop
+@enduml
