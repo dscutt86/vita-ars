@@ -1,0 +1,38 @@
+@startuml
+skinparam shadowing false
+skinparam roundcorner 15
+
+skinparam actor {
+    BackgroundColor #08427B
+    BorderColor #052E56
+    FontColor #08427B
+}
+
+skinparam participant {
+    BackgroundColor #438DD5
+    BorderColor #2E6295
+    FontColor #FFFFFF
+    BorderThickness 2
+}
+
+skinparam database {
+    BackgroundColor #438DD5
+    BorderColor #85BBF0
+    FontColor #FFFFFF
+    BorderThickness 2
+}
+
+
+actor "<b>Coordinator</b>\n[Person]\n\nManages schedules" as coordinator
+actor "<b>Client</b>\n[Person]\n\nBooks appointments" as client
+participant "<b>Web Frontend</b>\n[Container: HTML / CSS]\n\nProvides UI for booking, viewing,\nand canceling appointments" as frontend
+participant "<b>Backend API</b>\n[Container: Python / FastAPI / WeasyPrint]\n\nHandles scheduling logic, CLI admin,\nand PDF report generation" as backend
+database "<b>Application Database</b>\n[Container: SQLite3 / SQL]\n\nStores schedules and appointments" as db
+
+
+coordinator -> backend : Views and manages schedules and appointments\n[Command Line]
+client -> frontend : Schedules, views, and cancels appointments\n[HTTPS]
+frontend -> backend : Makes API calls and requests PDFs\n[JSON / HTTPS]
+backend -> db : Reads from and writes to\n[SQLite3 / SQL]
+
+@enduml

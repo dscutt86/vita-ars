@@ -1,0 +1,35 @@
+@startuml
+skinparam shadowing false
+skinparam roundcorner 15
+
+skinparam actor {
+    BackgroundColor #08427B
+    BorderColor #052E56
+    FontColor #08427B
+}
+
+skinparam participant {
+    BackgroundColor #438DD5
+    BorderColor #2E6295
+    FontColor #FFFFFF
+    BorderThickness 2
+}
+
+skinparam database {
+    BackgroundColor #438DD5
+    BorderColor #85BBF0
+    FontColor #FFFFFF
+    BorderThickness 2
+}
+
+
+actor "<b>Coordinator</b>\n[Person]\n\nManages schedules" as coordinator
+actor "<b>Client</b>\n[Person]\n\nBooks appointments" as client
+participant "<b>Appointment Reservation System</b>\n[Container: HTML, CSS, Python, FastAPI, SQLite3, WeasyPrint\n\nCreates and manages ARS schedules and appointments\nProvides front end for clients" as system
+
+
+coordinator -> system: Views and manages schedules and appointments [Command line]
+client -> system : Schedules, views and cancels appointment\n[HTTPS]
+
+
+@enduml
