@@ -1,0 +1,40 @@
+@startuml
+
+class Sites {
+  {PK} id: int
+  street: text
+  town: text
+  state: text
+  zipcode: int
+  phone: int
+}
+
+class Schedule_Blocks {
+  {PK} id: int
+  {FK} site_id: int
+  month: int
+  day: int
+  year: int
+  time: int
+  available: bool
+}
+
+class Block_Appointments {
+  {PK} {FK} appointment_id: int
+  {PK} {FK} block_id: int
+}
+
+class Appointments {
+  {PK} id: int
+  first_name: text
+  last_name: text
+  phone: int
+  email: text
+  confirmed: bool
+}
+
+Sites "1" *-- "0..*" Schedule_Blocks : offers
+Block_Appointments "0..8" --> "1" Schedule_Blocks : fills
+Block_Appointments "0..1" --> "1" Appointments : books
+
+@enduml
