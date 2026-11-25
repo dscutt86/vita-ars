@@ -7,6 +7,8 @@ from backend import DB
 from admin_console import Console, start_console
 from web_app import WebApp
 
+test = "ignore me"
+
 import time
 
 
