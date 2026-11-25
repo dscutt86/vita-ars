@@ -15,8 +15,8 @@ class Schedule_Blocks {
   month: int
   day: int
   year: int
-  time: int
-  available: bool
+  start_time: int
+  available: int (boolean - 0/1)
 }
 
 class Block_Appointments {
@@ -26,11 +26,11 @@ class Block_Appointments {
 
 class Appointments {
   {PK} id: int
+  {FK} block_id: int
   first_name: text
   last_name: text
   phone: int
-  email: text
-  confirmed: bool
+  confirmed: int (boolean - 0/1)
 }
 
 Sites "1" *-- "0..*" Schedule_Blocks : offers

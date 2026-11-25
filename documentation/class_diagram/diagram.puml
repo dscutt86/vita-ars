@@ -1,0 +1,9 @@
+@startuml
+
+class Person {
+  property1: int
+  property2[]: list
+  method1()
+}
+
+@enduml

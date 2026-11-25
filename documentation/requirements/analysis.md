@@ -172,7 +172,7 @@ The general income eligibility limit is $89,000 or less in prior-year household 
 income, based on the Hartwick VITA site's stated policy.
 
 ### BR05
-**Income Excemptions**<br/>
+**Income Exemptions**<br/>
 Seniors age 65 or older, veterans, active military personnel, and individuals with
 disabilities qualify for an exemption from the general income limit.
 
