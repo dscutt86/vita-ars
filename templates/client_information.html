@@ -1,0 +1,26 @@
+<html>
+
+    <head>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+
+    <body>
+
+        <H1>VITA ARS Project</H1>
+        <H2>Website currently under construction</H2>
+        
+        <div class="container">
+            <form action="/screening/sites/" method="post">
+                <label>First name <input name="first_name" required></label>
+                <label>Last name <input name="last_name" required></label>
+                <label>Zip code
+                    <input name="zipcode" required pattern="[0-9]{5}" inputmode="numeric">
+                </label>
+                <label>Phone
+                    <input name="phone" type="tel" required>
+                </label>
+                <input type="submit" value="Continue">
+            </form>
+        </div>
+    </body>
+</html>

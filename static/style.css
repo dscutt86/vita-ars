@@ -1,0 +1,25 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 50vh;
+    margin: 0;
+    background-color: antiquewhite;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+.container {
+    margin: auto;
+    text-align: center;
+}
+
+form.block {
+    display: inline-block;
+    margin: 4px;
+}

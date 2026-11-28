@@ -1,4 +1,5 @@
 
+
 import sqlite3
 
 
@@ -69,7 +70,8 @@ class DB():
                     scheduled_month INTEGER NOT NULL,
                     scheduled_day INTEGER NOT NULL,
                     scheduled_year INTEGER NOT NULL,
-                    start_time INTEGER NOT NULL,
+                    start_time TEXT NOT NULL,
+                    capacity INTEGER NOT NULL,
                     available INTEGER NOT NULL
                 )
             """)
@@ -82,7 +84,7 @@ class DB():
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
                     phone TEXT NOT NULL,
-                    confirmed INTEGER NOT NULL
+                    confirmation_number
                 )
             """)
 
@@ -117,6 +119,9 @@ class DB():
 
             for table in self.table_names:
                 conn.execute(f"DROP TABLE IF EXISTS {table}")
+            
+            print("Setting up clean database.")
+            self.setup()
         
         except sqlite3.Error as err:
             print(f"wipe() failed: {err}")
@@ -192,8 +197,8 @@ class DB():
         street:str,
         town:str,
         state:str,
-        zipcode:int,
-        phone:int
+        zipcode:str,
+        phone:str
     ):
         print(f"Adding new site to database")
         print("--", street, town, state, zipcode, phone)
@@ -204,15 +209,16 @@ class DB():
             # Connect to the database
             conn = self.connect()
             
-            conn.execute(
+            row_id = conn.execute(
                 """
                 INSERT INTO sites (street, town, state, zipcode, phone)
                 VALUES (?, ?, ?, ?, ?)
                 """,
                 (street, town, state, zipcode, phone)
-            )
+            ).lastrowid
 
             conn.commit()
+            return row_id
         
         except sqlite3.Error as err:
             print(f"insert_site() failed: {err}")
@@ -231,14 +237,15 @@ class DB():
         scheduled_month:int,
         scheduled_day:int,
         scheduled_year:int,
-        start_time:int,
+        start_time:str,
+        capacity:int,
         available:bool
     ):
         print(f"Adding new schedule block to database")
         print(
             f"""
             -- {site_id}, {scheduled_month}, {scheduled_day}, {scheduled_year}
-            -- {start_time}, {available}
+            -- {start_time}, {capacity}, {available}
             """
         )
 
@@ -253,21 +260,22 @@ class DB():
             # Connect to the database
             conn = self.connect()
             
-            conn.execute(
+            row_id = conn.execute(
                 """
                 INSERT INTO schedule_blocks (
                     site_id, scheduled_month, scheduled_day, scheduled_year,
-                    start_time, available
+                    start_time, capacity, available
                 )
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     site_id, scheduled_month, scheduled_day, scheduled_year,
-                    start_time, available
+                    start_time, capacity, available
                 )
-            )
+            ).lastrowid
 
             conn.commit()
+            return row_id
         
         except sqlite3.Error as err:
             print(f"insert_block() failed: {err}")
@@ -275,5 +283,221 @@ class DB():
 
         finally:
             # Close connection
+            if conn is not None:
+                conn.close()
+
+
+    # Add a new appointment to the database
+    def insert_appointment(
+        self,
+        block_id:int,
+        first_name:str,
+        last_name:str,
+        phone:str,
+        confirmation_number:str
+    ):
+        print(f"Adding new appointment to database")
+        print(
+            f"-- {block_id}, {first_name}, {last_name}, {phone}, "
+            f"{confirmation_number}"
+        )
+
+        conn = None
+
+        try:
+            # Connect to the database
+            conn = self.connect()
+            
+            row_id = conn.execute(
+                """
+                INSERT INTO appointments (
+                    block_id, first_name, last_name, phone, confirmation_number
+                )
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (block_id, first_name, last_name, phone, confirmation_number)
+            ).lastrowid
+
+            conn.commit()
+            return row_id
+        
+        except sqlite3.Error as err:
+            print(f"insert_appointment() failed: {err}")
+            raise
+
+        finally:
+            # Close connection
+            if conn is not None:
+                conn.close()
+
+
+    # Add a new block appointment bridge to the database
+    def insert_block_appointment(
+        self,
+        block_id:int,
+        appointment_id:int
+    ):
+        print(f"Adding new block appointment to database")
+        print(f"-- {block_id}, {appointment_id}")
+
+        conn = None
+
+        try:
+            # Connect to the database
+            conn = self.connect()
+            
+            row_id = conn.execute(
+                """
+                INSERT INTO block_appointments (
+                    block_id, appointment_id
+                )
+                VALUES (?, ?)
+                """,
+                (block_id, appointment_id)
+            ).lastrowid
+
+            conn.commit()
+            return row_id
+        
+        except sqlite3.Error as err:
+            print(f"insert_block_appointment() failed: {err}")
+            raise
+
+        finally:
+            # Close connection
+            if conn is not None:
+                conn.close()
+    
+    # Edit an existing block
+    def edit_block(
+        self,
+        id,
+        new_month,
+        new_day,
+        new_year,
+        new_time,
+        new_capacity,
+        new_availability
+    ):
+        print(f"Modifying block {id}")
+        print(new_month, new_day, new_year, new_time, new_capacity, new_availability)
+
+        conn = None
+
+        if new_availability and new_availability != "0":
+            new_availability = 1
+        else:
+            new_availability = 0
+
+        try:
+            conn = self.connect()
+
+            conn.execute("""
+                UPDATE schedule_blocks
+                SET scheduled_month = ?,
+                    scheduled_day = ?,
+                    scheduled_year = ?,
+                    start_time = ?,
+                    capacity = ?,
+                    available = ?
+                WHERE id = ?
+                """,
+                (
+                    new_month, new_day, new_year, new_time, new_capacity,
+                    new_availability, id
+                )
+            )
+
+            conn.commit()
+        
+        except sqlite3.Error as err:
+            print(f"edit_block() failed: {err}")
+            raise
+        
+        finally:
+            # Close connection
+            if conn is not None:
+                conn.close()
+
+
+
+    """
+            GET METHODS
+    """
+
+
+    # Get a single site
+    def get_site(self, site_id: int):
+        conn = None
+        try:
+            conn = self.connect()
+            conn.row_factory = sqlite3.Row
+            row = conn.execute(
+                "SELECT * FROM sites WHERE id = ?", (site_id,)
+            ).fetchone()
+            return dict(row) if row else None
+        finally:
+            if conn is not None:
+                conn.close()
+
+    # Get a single block
+    def get_block(self, block_id: int):
+        conn = None
+        try:
+            conn = self.connect()
+            conn.row_factory = sqlite3.Row
+            row = conn.execute(
+                "SELECT * FROM schedule_blocks WHERE id = ?", (block_id,)
+            ).fetchone()
+            return dict(row) if row else None
+        finally:
+            if conn is not None:
+                conn.close()
+    
+
+    # Count block appointments
+    def count_block_appointments(self, block_id: int):
+        conn = None
+        try:
+            conn = self.connect()
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute(
+                """
+                SELECT a.*
+                FROM block_appointments ba
+                JOIN appointments a ON a.id = ba.appointment_id
+                WHERE ba.block_id = ?
+                """,
+                (block_id,)
+            )
+            return len([dict(r) for r in rows])
+        except sqlite3.Error as err:
+            print(f"count_block_appointments() failed: {err}")
+            raise
+        finally:
+            if conn is not None:
+                conn.close()
+
+
+    # Get a block and all of its appointments
+    def get_block_appointments(self, block_id: int):
+        conn = None
+        try:
+            conn = self.connect()
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute(
+                """
+                SELECT a.*
+                FROM block_appointments ba
+                JOIN appointments a ON a.id = ba.appointment_id
+                WHERE ba.block_id = ?
+                """,
+                (block_id,)
+            )
+            return [dict(r) for r in rows]
+        except sqlite3.Error as err:
+            print(f"get_block_appointments() failed: {err}")
+            raise
+        finally:
             if conn is not None:
                 conn.close()
